@@ -6,7 +6,7 @@ from time import time as timer #імпортуємо функцію для за�
 mixer.init()
 mixer.music.load('space.ogg')
 mixer.music.play()
-fire_sound = mixer.Sound('fire.ogg')
+fire_sound = mixer.Sound('shootsound2.mp3')
 
 font.init()
 font1 = font.SysFont("Arial", 36)
@@ -16,10 +16,10 @@ lose = font2.render('YOU LOSE!', True, (180, 0, 0))
 
 
 img_back = "backg.jpg"
-img_hero = "soldatik1.png"
+img_hero = "hero.gif"
 img_enemy = "zombie2.png"
 img_non_killable_enemy = "monster3.png"
-img_health = "healthPoint.png"
+img_health = "healthpoint1.png"
 
 score = 0
 lost = 0
@@ -55,6 +55,8 @@ class Player(GameSprite):
         bullets.add(bullet)
 
 class Enemy(GameSprite):
+    def __init__(self, sprite_img, sprite_x, sprite_y, size_x, size_y, sprite_speed ):
+        super().__init__(sprite_img, sprite_x, sprite_y, size_x, size_y, sprite_speed)   
     def update(self):
         self.rect.y += self.speed
         global lost
@@ -64,7 +66,9 @@ class Enemy(GameSprite):
             lost +=1
 
 class Asteroid(GameSprite):
-    def update(self):
+     def __init__(self, sprite_img, sprite_x, sprite_y, size_x, size_y, sprite_speed ):
+        super().__init__(sprite_img, sprite_x, sprite_y, size_x, size_y, sprite_speed)  
+     def update(self):
         self.rect.y += self.speed
         if self.rect.y > win_height:
             self.rect.x = randint (80, win_width - 80)
@@ -110,10 +114,10 @@ asteroids = sprite.Group()
 # health_packs.add(health_pack)
 
 for i in range(1, 6):
-    monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 90, 70, randint(1, 3))
+    monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 100, 100, 1 )
     monsters.add(monster)
 for i in range(1, 3):
-    asteroid = Asteroid(img_non_killable_enemy, randint(30, win_width - 30), -40, 90, 70, randint(1, 7))
+    asteroid = Asteroid(img_non_killable_enemy, randint(30, win_width - 30), -40, 100, 100, 5,)
     asteroids.add(asteroid)
 
 run = True
@@ -173,17 +177,32 @@ while run:
         for collide in collides:
             # цей цикл повториться стільки разів, скільки монстрів збито
             score = score + 1
-            monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1, 3))
+            monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 100, 100, 1)
             monsters.add(monster)
-        
+
+        collides = sprite.groupcollide(asteroids, bullets, True, True)
+        for collide in collides:
+              score = score + 1
+              asteroid = Asteroid(img_non_killable_enemy, randint(30, win_width - 30), -40, 100, 100, 5)
+              asteroids.add(asteroid)
+            
+            
+
+     
+            
+
+
         # якщо спрайт торкнувся ворога зменшує життя
-        if sprite.spritecollide(player, monsters, False) or sprite.spritecollide(player, asteroids, False):
+        if sprite.spritecollide(player, monsters, False):
             life = life - 1
             if sprite.spritecollide(player, monsters, True):
-                monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 80, 50, randint(1, 3))
+                monster = Enemy(img_enemy, randint(80, win_width - 80), -40, 100, 100, 1)
                 monsters.add(monster)
+
+        if sprite.spritecollide(player, asteroids, False):
+            life = life - 2
             if sprite.spritecollide(player, asteroids, True):
-                asteroid = Asteroid(img_non_killable_enemy, randint(30, win_width - 30), -40, 80, 50, randint(1, 7))
+                asteroid = Asteroid(img_non_killable_enemy, randint(30, win_width - 30), -40, 100, 100, 5)
                 asteroids.add(asteroid)
             
 
