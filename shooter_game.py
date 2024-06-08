@@ -47,11 +47,11 @@ class Player(GameSprite):
         keys = key.get_pressed()
         if keys[K_LEFT] and self.rect.x > 5:
             self.rect.x -= self.speed
-        if keys[K_RIGHT] and self.rect.x < win_width - 80:
+        if keys[K_RIGHT] and self.rect.x < win_width - 90:
             self.rect.x += self.speed
         if keys[K_UP] and self.rect.y > 5:  
             self.rect.y -= self.speed
-        if keys[K_DOWN] and self.rect.y < win_height - 80:  
+        if keys[K_DOWN] and self.rect.y < win_height - 90:  
             self.rect.y += self.speed
     def fire(self):
         bullet = Bullet("bullet.png", self.rect.centerx - 5, self.rect.top, 15, 20, -15)
