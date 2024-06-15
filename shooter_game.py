@@ -205,7 +205,7 @@ while run:
             ammo_packs.add(ammo_pack)
         if score >= 5:
             if isBoss_spawned == False:
-                superMonster = SuperEnemy(img_superEnemy, 350, -110 , 160, 100, randint(1, 3), 1)
+                superMonster = SuperEnemy(img_superEnemy, 350, -110 , 160, 100, randint(1, 3), 1,True)
                 superMonsters.add(superMonster)
                 isBoss_spawned = True
 
